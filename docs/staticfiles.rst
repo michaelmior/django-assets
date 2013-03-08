@@ -30,10 +30,10 @@ As a refresher, this is how Django's ``staticfiles`` application works:
 
 *django-assets* integrates into this in the following way:
 
-    * When Django is in debug mode (``DEBUG=True``), webassets uses the
-      staticfiles mechanism to find the files you reference in bundles, 
-      in the same way the ``staticfiles`` serve view does. You can work
-      with all of your assets the way you'd expect.
+    * webassets uses the staticfiles mechanism to find the files you
+      reference in bundles, in the same way the ``staticfiles`` serve
+      view does. You can work with all of your assets the way you'd
+      expect.
 
       This even works with globs, so "\*.js" will query Javascript files
       from across all of your applicatnion's static directories.

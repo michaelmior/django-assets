@@ -106,11 +106,6 @@ class StorageGlobber(Globber):
 class DjangoResolver(Resolver):
     """Adds support for staticfiles resolving."""
 
-    @property
-    def use_staticfiles(self):
-        return settings.DEBUG and \
-            'django.contrib.staticfiles' in settings.INSTALLED_APPS
-
     def glob_staticfiles(self, item):
         # The staticfiles finder system can't do globs, but we can
         # access the storages behind the finders, and glob those.
@@ -132,9 +127,6 @@ class DjangoResolver(Resolver):
                     yield storage.path(file)
 
     def search_for_source(self, item):
-        if not self.use_staticfiles:
-            return Resolver.search_for_source(self, item)
-
         # Use the staticfiles finders to determine the absolute path
         if finders:
             if has_magic(item):
@@ -148,9 +140,6 @@ class DjangoResolver(Resolver):
             "'%s' not found (using staticfiles finders)" % item)
 
     def resolve_source_to_url(self, filepath, item):
-        if not self.use_staticfiles:
-            return Resolver.resolve_source_to_url(self, filepath, item)
-
         # With staticfiles enabled, searching the url mappings, as the
         # parent implementation does, will not help. Instead, we can
         # assume that the url is the root url + the original relative
