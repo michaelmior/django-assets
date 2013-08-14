@@ -10,6 +10,7 @@ except ImportError:
     finders = None
 
 from glob import Globber, has_magic
+from django_assets.cache import DjangoCache
 
 
 __all__ = ('register',)
@@ -60,7 +61,12 @@ class DjangoConfigStorage(ConfigStorage):
             value = self._get_deprecated(key)
             if value is not None:
                 return value
-            return getattr(settings, self._transform_key(key))
+            value = getattr(settings, self._transform_key(key))
+
+            if key.lower() == 'cache' and value == 'django':
+                value = DjangoCache
+
+            return value
         else:
             raise KeyError("Django settings doesn't define %s" % key)
 
